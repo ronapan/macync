@@ -8,6 +8,7 @@ import {
   ShieldAlert, Receipt, Clock, UploadCloud, MapPin, User, Phone 
 } from 'lucide-react';
 import '../../index.css';
+import API_URL from '../api';
 
 const DonatePage = () => {
   // 1. INITIALIZATION & STATES
@@ -35,7 +36,7 @@ const DonatePage = () => {
   const fetchMyDonations = useCallback(async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo?.token}` } };
-      const { data } = await axios.get('http://localhost:3000/api/v1/donate/my', config);
+      const { data } = await axios.get(`${API_URL}/donate/my`, config);
       setMyDonations(data);
     } catch (err) {
       console.error("Fetch Error:", err.message);
@@ -51,7 +52,7 @@ const DonatePage = () => {
     if (!window.confirm("Are you sure you want to delete this pending record?")) return;
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:3000/api/v1/donate/${id}`, config);
+      await axios.delete(`${API_URL}/donate/${id}`, config);
       
       setModal({ show: true, type: 'success', title: 'Record Removed', message: 'The pending donation record has been purged.' });
       setSelectedDonation(null);
@@ -90,7 +91,7 @@ const DonatePage = () => {
         } 
       };
       
-      await axios.post('http://localhost:3000/api/v1/donate', data, config);
+      await axios.post(`${API_URL}/donate`, data, config);
       
       setModal({ 
         show: true, 

@@ -9,6 +9,7 @@ import {
   History, MapPin, ShieldCheck, Trash2, ShieldAlert, Edit3, XCircle 
 } from 'lucide-react';
 import '../index.css';
+import API_URL from './api'; // Centralized API URL configuration
 
 const ReportPage = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -27,7 +28,7 @@ const ReportPage = () => {
       if (userRole === 'barangay_officer' || activeTab !== 'status') return;
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo?.token}` } };
-        const { data } = await axios.get('http://localhost:3000/api/v1/records/my-reports', config);
+        const { data } = await axios.get(`${API_URL}/records/my-reports`, config);
         setReports(data);
       } catch (err) {
         console.error("Error loading reports:", err);
@@ -41,7 +42,7 @@ const ReportPage = () => {
     if (!window.confirm('Are you sure you want to delete this report?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:3000/api/v1/records/${reportId}`, config);
+      await axios.delete(`${API_URL}/records/${reportId}`, config);
       setModal({ show: true, type: 'success', title: 'Deleted', message: 'Report removed successfully.' });
       setReports(prev => prev.filter(r => r._id !== reportId));
       setSelectedReport(null);
@@ -82,7 +83,7 @@ const ReportPage = () => {
               <div className="lg:col-span-1 space-y-6">
                 <div className="bg-white p-10 rounded-[.5rem] shadow-sm border border-gray-100 relative group">
                   
-                  {/* 🔥 DYNAMIC ACTION BUTTONS (Visible if Pending) */}
+                  {/*  DYNAMIC ACTION BUTTONS (Visible if Pending) */}
                   {selectedReport.status === 'pending' && (
                     <div className="absolute top-6 right-6 flex gap-2">
                       <button 
@@ -118,7 +119,7 @@ const ReportPage = () => {
                         <h3 className="text-xl font-black text-blue-600 uppercase tracking-widest">Editing Mode</h3>
                         <button onClick={() => setIsEditing(false)} className="text-gray-300 hover:text-red-500 transition-colors"><XCircle size={28}/></button>
                      </div>
-                     {/* 🔥 PASSING DATA TO FORM */}
+                     {/*  PASSING DATA TO FORM */}
                      <ReportForm 
                         initialData={selectedReport} 
                         onSuccess={() => {

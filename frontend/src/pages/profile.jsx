@@ -4,6 +4,7 @@ import Sidebar from '../components/sidebar';
 import NotificationModal from '../components/notificationmodal';
 import { User, Mail, MapPin, Shield, Edit3, CheckCircle, XCircle } from 'lucide-react';
 import { locations } from '../utils/location'; // Siguraduhing tama ang path nito
+import API_URL from './api'; // Centralized API URL configuration
 
 const Profile = () => {
   // 1. STATES
@@ -24,7 +25,7 @@ const Profile = () => {
       if (!userInfo) return;
 
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:3000/api/v1/users/profile', config);
+      const { data } = await axios.get(`${API_URL}/users/profile`, config);
       
       setUser(data);
       // I-set ang initial values ng form base sa data mula sa DB
@@ -57,7 +58,7 @@ const Profile = () => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       
-      const { data } = await axios.put('http://localhost:3000/api/v1/users/profile', formData, config);
+      const { data } = await axios.put(`${API_URL}/users/profile`, formData, config);
       
       setUser(data);
       // I-update ang localStorage para mag-reflect sa Sidebar ang bagong pangalan

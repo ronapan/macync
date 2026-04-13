@@ -4,6 +4,7 @@ import { categories } from '../../utils/categories';
 import NotificationModal from '../../components/notificationmodal';
 import { FileText, MapPin, UploadCloud, Image, Video, CheckCircle, ShieldAlert, Edit3 } from 'lucide-react';
 import '../../index.css';
+import API_URL from '../api';
 
 const ReportForm = ({ onSuccess, initialData }) => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -48,7 +49,7 @@ const ReportForm = ({ onSuccess, initialData }) => {
 
       if (initialData) {
         // --- EDIT MODE (PUT) ---
-        await axios.put(`http://localhost:3000/api/v1/records/${initialData._id}`, data, config);
+        await axios.put(`${API_URL}/records/${initialData._id}`, data, config);
         setModal({
           show: true,
           type: 'success',
@@ -57,7 +58,7 @@ const ReportForm = ({ onSuccess, initialData }) => {
         });
       } else {
         // --- CREATE MODE (POST) ---
-        await axios.post('http://localhost:3000/api/v1/records', data, config);
+        await axios.post(`${API_URL}/records`, data, config);
         setModal({
           show: true,
           type: 'success',

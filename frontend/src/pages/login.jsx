@@ -5,6 +5,7 @@ import { Mail, Lock, LayoutGrid, Globe, Apple } from 'lucide-react';
 import '../index.css'; 
 import logo from '../assets/images/logo.png'; 
 import heroBg from '../assets/images/bg-sign.png'; // Ensure path is correct
+import API_URL from './api'; // Centralized API URL configuration
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post("http://localhost:3000/api/v1/users/login", { email, password });
+      const res = await axios.post(`${API_URL}/users/login`, { email, password });
       
       // Save token and info
       localStorage.setItem("userInfo", JSON.stringify(res.data));

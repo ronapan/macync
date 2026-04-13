@@ -6,6 +6,7 @@ import { locations } from '../utils/location'; // Siguraduhing tama ang import p
 import '../index.css'; 
 import logo from '../assets/images/logo.png'; 
 import heroBg from '../assets/images/bg-sign1.png'; 
+import API_URL from './api'; // Centralized API URL configuration
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ const Register = () => {
 
     try {
       // Dito mo i-check kung tama ang URL (3000 o 5000)
-      await axios.post("http://localhost:3000/api/v1/users/register", formData);
+      await axios.post(`${API_URL}/users/register`, formData);
       alert("Registration Successful! Please login.");
       navigate("/login");
     } catch (err) {

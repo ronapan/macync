@@ -4,6 +4,7 @@ import Sidebar from '../../components/sidebar';
 import NotificationModal from '../../components/notificationmodal';
 import { ShieldCheck, Eye, FileText, MapPin, CheckCircle, Clock, User, Phone, ArrowUpRight, History } from 'lucide-react';
 import '../../index.css';
+import API_URL from '../api';
 
 const MuniDashboard = () => {
   const [reports, setReports] = useState([]);
@@ -17,7 +18,7 @@ const MuniDashboard = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:3000/api/v1/records', config);
+      const { data } = await axios.get(`${API_URL}/records`, config);
       setReports(data);
     } catch (err) { console.error(err); } finally { setLoading(false); }
   }, []);
@@ -32,7 +33,7 @@ const MuniDashboard = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.put(`http://localhost:3000/api/v1/records/${id}/status`, { status, comment: note }, config);
+      await axios.put(`${API_URL}/records/${id}/status`, { status, comment: note }, config);
       setModal({ show: true, type: 'success', title: 'Action Saved', msg: 'Municipal action has been logged.' });
       setNote(''); setSelectedReport(null); fetchData();
     } catch (err) { console.error(err); }

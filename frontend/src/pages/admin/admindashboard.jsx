@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import NotificationModal from '../../components/notificationmodal';
 import '../../index.css';
+import API_URL from '../api';
 
 const AdminDashboard = () => {
   
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:3000/api/v1/admin/analytics', config);
+      const { data } = await axios.get(`${API_URL}/admin/analytics`, config);
       setAnalytics(data);
       
       const counts = {};

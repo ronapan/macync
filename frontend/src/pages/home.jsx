@@ -5,6 +5,7 @@ import {
   ChevronRight, Users, Star, Megaphone, Newspaper 
 } from 'lucide-react';
 
+
 const Home = () => {
   // Mock Data for the 5 Activities
   

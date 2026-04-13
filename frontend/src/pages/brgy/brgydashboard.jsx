@@ -9,6 +9,7 @@ import {
   ExternalLink, // Idinagdag ito para sa Resolution Letter link
   ShieldCheck   // <--- ETO ANG FIX para sa error mo
 } from 'lucide-react';
+import API_URL from '../api';
 
 const BrgyDashboard = () => {
   const [reports, setReports] = useState([]);
@@ -24,7 +25,7 @@ const BrgyDashboard = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:3000/api/v1/records', config);
+      const { data } = await axios.get(`${API_URL}/records`, config);
       setReports(data);
     } catch (err) { console.error(err); } finally { setLoading(false); }
   };
@@ -46,7 +47,7 @@ const BrgyDashboard = () => {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       
       // PASSING URGENCY LEVEL TO BACKEND
-      await axios.put(`http://localhost:3000/api/v1/records/${reportId}/status`, 
+      await axios.put(`${API_URL}/records/${reportId}/status`, 
         { status: newStatus, comment: note, urgencyLevel: urgency }, 
         config
       );
