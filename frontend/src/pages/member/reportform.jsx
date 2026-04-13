@@ -4,7 +4,7 @@ import { categories } from '../../utils/categories';
 import NotificationModal from '../../components/notificationmodal';
 import { FileText, MapPin, UploadCloud, Image, Video, CheckCircle, ShieldAlert, Edit3 } from 'lucide-react';
 import '../../index.css';
-import API_URL from '../api';
+import API_URL from '../../api';
 
 const ReportForm = ({ onSuccess, initialData }) => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));

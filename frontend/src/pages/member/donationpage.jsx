@@ -8,7 +8,7 @@ import {
   ShieldAlert, Receipt, Clock, UploadCloud, MapPin, User, Phone 
 } from 'lucide-react';
 import '../../index.css';
-import API_URL from '../api';
+import API_URL from '../../api';
 
 const DonatePage = () => {
   // 1. INITIALIZATION & STATES

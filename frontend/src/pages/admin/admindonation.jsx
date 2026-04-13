@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import NotificationModal from '../../components/notificationmodal';
 import '../../index.css';
-import API_URL from '../api';
+import API_URL from '../../api';
 
 const AdminDonation = () => {
   // 1. STATES

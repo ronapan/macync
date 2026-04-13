@@ -9,7 +9,7 @@ import {
   History, MapPin, ShieldCheck, Trash2, ShieldAlert, Edit3, XCircle 
 } from 'lucide-react';
 import '../index.css';
-import API_URL from './api'; // Centralized API URL configuration
+import API_URL from '../api'; // Centralized API URL configuration
 
 const ReportPage = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));

@@ -9,7 +9,7 @@ import {
   ExternalLink, // Idinagdag ito para sa Resolution Letter link
   ShieldCheck   // <--- ETO ANG FIX para sa error mo
 } from 'lucide-react';
-import API_URL from '../api';
+import API_URL from '../../api';
 
 const BrgyDashboard = () => {
   const [reports, setReports] = useState([]);

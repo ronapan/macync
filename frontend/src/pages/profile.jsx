@@ -4,7 +4,7 @@ import Sidebar from '../components/sidebar';
 import NotificationModal from '../components/notificationmodal';
 import { User, Mail, MapPin, Shield, Edit3, CheckCircle, XCircle } from 'lucide-react';
 import { locations } from '../utils/location'; // Siguraduhing tama ang path nito
-import API_URL from './api'; // Centralized API URL configuration
+import API_URL from '../api'; // Centralized API URL configuration
 
 const Profile = () => {
   // 1. STATES

@@ -4,7 +4,7 @@ import Sidebar from '../../components/sidebar';
 import NotificationModal from '../../components/notificationmodal';
 import { ShieldCheck, Eye, FileText, MapPin, CheckCircle, Clock, User, Phone, ArrowUpRight, History } from 'lucide-react';
 import '../../index.css';
-import API_URL from '../api';
+import API_URL from '../../api';
 
 const MuniDashboard = () => {
   const [reports, setReports] = useState([]);

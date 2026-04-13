@@ -5,7 +5,7 @@ import { Mail, Lock, LayoutGrid, Globe, Apple } from 'lucide-react';
 import '../index.css'; 
 import logo from '../assets/images/logo.png'; 
 import heroBg from '../assets/images/bg-sign.png'; // Ensure path is correct
-import API_URL from './api'; // Centralized API URL configuration
+import API_URL from '../api'; // Centralized API URL configuration
 
 const Login = () => {
   const [email, setEmail] = useState('');

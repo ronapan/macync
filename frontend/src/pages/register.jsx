@@ -6,7 +6,7 @@ import { locations } from '../utils/location'; // Siguraduhing tama ang import p
 import '../index.css'; 
 import logo from '../assets/images/logo.png'; 
 import heroBg from '../assets/images/bg-sign1.png'; 
-import API_URL from './api'; // Centralized API URL configuration
+import API_URL from '../api'; // Centralized API URL configuration
 
 const Register = () => {
   const [formData, setFormData] = useState({
