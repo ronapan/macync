@@ -19,7 +19,7 @@ const ReportPage = () => {
   const [activeTab, setActiveTab] = useState('status'); 
   const [reports, setReports] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // 🔥 DITO ANG FIX: State para sa Edit Mode
+  const [isEditing, setIsEditing] = useState(false); 
   const [modal, setModal] = useState({ show: false, type: 'success', title: '', message: '' });
 
   // 2. FETCH DATA

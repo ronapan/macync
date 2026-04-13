@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, MapPin, Shield, ArrowLeft } from 'lucide-react';
-import { locations } from '../utils/location'; // Siguraduhing tama ang import path
+import { locations } from '../utils/location'; 
 import '../index.css'; 
 import logo from '../assets/images/logo.png'; 
 import heroBg from '../assets/images/bg-sign1.png'; 
@@ -28,14 +28,14 @@ const Register = () => {
     e.preventDefault();
     setError('');
     
-    // Validation: Siguraduhing may barangay bago i-send
+    
     if (!formData.barangay) {
       setError("Please select your Municipality and Barangay.");
       return;
     }
 
     try {
-      // Dito mo i-check kung tama ang URL (3000 o 5000)
+      
       await axios.post(`${API_URL}/users/register`, formData);
       alert("Registration Successful! Please login.");
       navigate("/login");
@@ -104,7 +104,7 @@ const Register = () => {
               </select>
             </div>
 
-            {/* MUNICIPALITY SELECT (Kailangan na ito ng lahat ngayon) */}
+            {/* MUNICIPALITY SELECT  */}
             <div className="relative group animate-in slide-in-from-top-2">
               <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <select 
