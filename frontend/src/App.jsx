@@ -2,22 +2,49 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./pages/landing.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
-import Profile from './pages/profile.jsx';
-import DonatePage from './pages/member/donationpage.jsx'; // Para sa Member
-import AdminDonation from './pages/admin/admindonation.jsx'; // Para sa Admin
+import Profile from "./pages/profile.jsx";
 
-// Import all role-based components
-import Home from './pages/home.jsx'; // Shared Dashboard (News Feed)
-import ReportPage from './pages/reportpage.jsx'; // Member View
-import BrgyDashboard from './pages/brgy/brgydashboard.jsx'; // Brgy Officer View
-import MuniDashboard from './pages/municipal/municipaldashboard.jsx'; // Municipal Officer View
+import DonatePage from "./pages/member/donationpage.jsx";
+import AdminDonation from "./pages/admin/admindonation.jsx";
+
+import Home from "./pages/home.jsx";
+import ReportPage from "./pages/reportpage.jsx";
+import BrgyDashboard from "./pages/brgy/brgydashboard.jsx";
+import MuniDashboard from "./pages/municipal/municipaldashboard.jsx";
 import AdminDashboard from "./pages/admin/admindashboard.jsx";
 
-function App() {
-  // Kunin ang user info mula sa localStorage
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  const userRole = userInfo?.role;
+// ─── Helpers ────────────────────────────────────────────────────────────────
 
+function getUserInfo() {
+  try {
+    return JSON.parse(localStorage.getItem("userInfo")) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// Redirects to /login if not authenticated
+function PrivateRoute({ children }) {
+  const userInfo = getUserInfo();
+  return userInfo ? children : <Navigate to="/login" replace />;
+}
+
+// Renders the correct component based on the user's role
+function RoleBasedRoute({ roleMap, fallback = null }) {
+  const userInfo = getUserInfo();
+
+  if (!userInfo) return <Navigate to="/login" replace />;
+
+  const component = roleMap[userInfo.role] ?? fallback;
+
+  if (!component) return <Navigate to="/dashboard" replace />;
+
+  return component;
+}
+
+// ─── App ─────────────────────────────────────────────────────────────────────
+
+function App() {
   return (
     <Routes>
       {/* PUBLIC ROUTES */}
@@ -25,41 +52,60 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* DASHBOARD (Shared Home - Announcements) */}
-      <Route 
-        path="/dashboard" 
-        element={userInfo ? <Home /> : <Navigate to="/login" />} 
-      />
-
-      {/* THE SMART REPORT HUB (Strict Role Switching) */}
-      <Route 
-        path="/report" 
+      {/* SHARED DASHBOARD — accessible by all logged-in users */}
+      <Route
+        path="/dashboard"
         element={
-          !userInfo ? (
-            <Navigate to="/login" />
-          ) : userRole === 'admin' ? (
-            <AdminDashboard /> // Admin View
-          ) : userRole === 'municipal_officer' ? (
-            <MuniDashboard /> // Municipal View
-          ) : userRole === 'barangay_officer' ? (
-            <BrgyDashboard /> // Barangay View
-          ) : (
-            <ReportPage />    // Member View (Default)
-          )
-        }  
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }
       />
 
-      <Route 
-        path="/donate" 
+      {/* REPORT — role-based view */}
+      <Route
+        path="/report"
         element={
-          !userInfo ? <Navigate to="/login" /> : 
-          userRole === 'admin' ? <AdminDonation /> : <DonatePage />
-        } 
+          <RoleBasedRoute
+            roleMap={{
+              admin: <AdminDashboard />,
+              municipal_officer: <MuniDashboard />,
+              barangay_officer: <BrgyDashboard />,
+              member: <ReportPage />,
+            }}
+            fallback={<ReportPage />} // default para sa ibang roles
+          />
+        }
       />
 
+      {/* DONATE — role-based view */}
+      <Route
+        path="/donate"
+        element={
+          <RoleBasedRoute
+            roleMap={{
+              admin: <AdminDonation />,
+              municipal_officer: <AdminDonation />, // i-adjust kung kailangan
+              barangay_officer: <AdminDonation />,  // i-adjust kung kailangan
+              member: <DonatePage />,
+            }}
+            fallback={<DonatePage />} // default
+          />
+        }
+      />
 
-      <Route path="/profile" element={userInfo ? <Profile /> : <Navigate to="/login" />} />
-      <Route path="*" element={<Navigate to="/dashboard" />} />
+      {/* PROFILE */}
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        }
+      />
+
+      {/* CATCH-ALL — para hindi mag-404 sa Vercel */}
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
