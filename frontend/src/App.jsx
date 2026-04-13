@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./pages/landing.jsx";
-import Register from "./pages/Register.jsx";
+import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
 import Profile from './pages/profile.jsx';
 import DonatePage from './pages/member/donationpage.jsx'; // Para sa Member
