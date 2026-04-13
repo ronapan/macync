@@ -15,7 +15,11 @@ connectDB();
 const app = express();
 
 // Global Middlewares
-app.use(cors());
+app.use(cors({
+  origin: "*", // Payagan muna lahat para sa testing/defense
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
@@ -29,4 +33,6 @@ app.use("/api/v1/admin", adminRoutes);
 app.get("/", (req, res) => res.send("MaCync API Operating Normally"));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`MaCync Server active on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`MaCync Server active on port ${PORT}`);
+});
