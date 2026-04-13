@@ -10,7 +10,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 // 1. CORE & IDENTITY PAGES
 // ==========================================
 import Landing from "./pages/landing.jsx";
-import Register from "./pages/Register.jsx";
+import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
 import Profile from './pages/profile.jsx';
 
