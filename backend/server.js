@@ -42,7 +42,7 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 // 4. API ROUTE REGISTRATION
 app.use("/api/v1/users", authRoutes);
 app.use("/api/v1/records", recordRoutes);
-app.use("/api/v1/donations", donationRoutes); // Standardized to plural 'donations'
+app.use("/api/v1/donations", donationRoutes); 
 app.use("/api/v1/admin", adminRoutes);
 
 // Root Endpoint for verification

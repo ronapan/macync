@@ -27,7 +27,7 @@ const AdminDonation = () => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       if (!userInfo) return;
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const response = await axios.get(`${API_URL}/donate`, config);
+      const response = await axios.get(`${API_URL}/donations`, config);
       setData(response.data);
     } catch (err) {
       console.error("Fetch error:", err);
@@ -46,7 +46,7 @@ const AdminDonation = () => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       
-      await axios.put(`${API_URL}/donate/${id}`, { 
+      await axios.put(`${API_URL}/donations/${id}`, { 
         status, 
         adminNote: adminNote || "Transaction verified by MaCync Treasury." 
       }, config);

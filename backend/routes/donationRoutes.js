@@ -26,8 +26,8 @@ router.get("/stats", protect, authorizeRoles('admin'), getAdminDonations);
 
 // 3. Main endpoints
 router.route("/")
-  .post(protect, upload.single('proofOfPayment'), createDonation)
-  .get(protect, authorizeRoles('admin'), getAdminDonations);
+  .get(protect, authorizeRoles('admin'), getAdminDonations)
+  .post(protect, upload.single('proofOfPayment'), createDonation);
 
 // 4. Specific donation actions
 router.route("/:id")

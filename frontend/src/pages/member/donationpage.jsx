@@ -80,40 +80,54 @@ const DonatePage = () => {
   };
 
   // 5. SUBMISSION LOGIC (Create or Update)
-  const handleFinalSubmit = async () => {
-    setLoading(true);
-    const data = new FormData();
-    Object.keys(formData).forEach(key => data.append(key, formData[key]));
-    data.append('donorName', userInfo.name);
-    if (proof) data.append('proofOfPayment', proof);
+  // Inside DonatePage.jsx -> handleFinalSubmit function
 
-    try {
-      const config = { headers: { Authorization: `Bearer ${userInfo.token}`, 'Content-Type': 'multipart/form-data' } };
-      
-      // This stays PUT — correct for member editing their own donation
-      if (isEditing && formData._id) {
-      const { data } = await axios.get(`${API_URL}/donations/my`, config);
-      setMyDonations(data);
-      const updated = data.find(d => d._id === formData._id);
-      if (updated) setSelectedDonation(updated);
-      }
-      
-      setModal({ 
-        show: true, 
-        type: 'success', 
-        title: isEditing ? 'Update Success' : 'Donation Submitted', 
-        message: 'Record successfully logged in the central database.' 
-      });
+const handleFinalSubmit = async () => {
+  if (!proof) {
+    setModal({ show: true, type: 'error', title: 'File Missing', message: 'Please upload the receipt screenshot.' });
+    return;
+  }
 
-      setFormData({ amount: '', referenceNumber: '', category: '', contactNumber: '', paymentMethod: '' });
-      setProof(null);
-      setIsEditing(false);
+  setLoading(true);
+  const data = new FormData();
+  
+  // 🔥 CRITICAL: Match these keys to the backend destructuring
+  data.append('amount', formData.amount);
+  data.append('paymentMethod', formData.paymentMethod);
+  data.append('referenceNumber', formData.referenceNumber);
+  data.append('category', formData.category);
+  data.append('contactNumber', formData.contactNumber);
+  data.append('donorName', userInfo.name);
+  data.append('municipality', userInfo.municipality); // Use userInfo address to be safe
+  data.append('barangay', userInfo.barangay);
+  data.append('proofOfPayment', proof);
+
+  try {
+    const config = { 
+      headers: { 
+        Authorization: `Bearer ${userInfo.token}`, 
+        'Content-Type': 'multipart/form-data' 
+      } 
+    };
+    
+    const response = await axios.post(`${API_URL}/donations`, data, config);
+    
+    // Only show success if we get a 201
+    if (response.status === 201) {
+      setModal({ show: true, type: 'success', title: 'Success', message: 'Donation successfully sent to MaCync Treasury.' });
       setStep('history');
-      await fetchMyDonations(); 
-    } catch (error) {
-      setModal({ show: true, type: 'error', title: 'Error', message: error.response?.data?.message || 'DB Connection Error.' });
-    } finally { setLoading(false); }
-  };
+      fetchMyDonations();
+    }
+  } catch (error) {
+    console.error("SUBMISSION ERROR:", error.response?.data);
+    setModal({ 
+      show: true, 
+      type: 'error', 
+      title: 'Submission Failed', 
+      message: error.response?.data?.message || 'Database validation failed. Check your Reference Number length (min 10).' 
+    });
+  } finally { setLoading(false); }
+};
 
   return (
     <Sidebar>

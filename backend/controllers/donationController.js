@@ -3,29 +3,39 @@ import Donation from "../models/donation.js";
 // @desc Member: Submit new donation
 export const createDonation = async (req, res) => {
   try {
+    // 1. Log what is arriving to see if fields are missing
+    console.log("Incoming Donation Body:", req.body);
+    console.log("Incoming File:", req.file);
+
     if (!req.file) {
-      return res.status(400).json({ message: "Please upload the proof of payment image" });
+      return res.status(400).json({ message: "Proof of payment image is required" });
     }
 
-    const { amount, referenceNumber, category, donorName, contactNumber, paymentMethod } = req.body; // 🔥 added paymentMethod
+    const { amount, referenceNumber, category, donorName, contactNumber, paymentMethod, municipality, barangay } = req.body;
 
+    // 2. Strict Validation Check before DB attempt
+    if (!amount || !referenceNumber || !paymentMethod || !municipality || !barangay) {
+      return res.status(400).json({ message: "Missing required fields: Amount, Ref#, Method, or Address" });
+    }
+
+    // 3. Save to DB
     const donation = await Donation.create({
       donatorId: req.user._id,
       donorName: donorName || req.user.name,
       contactNumber: contactNumber || "09XXXXXXXXX",
       amount,
-      paymentMethod, // 🔥 now saved
+      paymentMethod,
       referenceNumber,
       category,
-      municipality: req.user.municipality,
-      barangay: req.user.barangay,
+      municipality,
+      barangay,
       proofOfPayment: req.file.path,
     });
 
     res.status(201).json(donation);
   } catch (error) {
-    console.error("DONATION ERROR:", error.message);
-    res.status(500).json({ message: "Server Error: " + error.message });
+    console.error("DATABASE SAVE ERROR:", error.message);
+    res.status(500).json({ message: "Database Error: " + error.message });
   }
 };
 
