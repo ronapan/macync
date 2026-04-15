@@ -103,7 +103,7 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-20">
         
         {/* HEADER */}
-        <header className="flex justify-between items-center bg-white p-10 rounded-[3.5rem] shadow-sm border border-gray-100">
+        <header className="flex justify-between items-center bg-white p-10 rounded-[.5rem] shadow-sm border border-gray-100">
           <div>
             <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase leading-none">Executive Command</h1>
             <p className="text-gray-400 font-bold uppercase tracking-[3px] text-[9px] mt-2 italic">Data Retrieval Mode: ACTIVE</p>
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
         </header>
 
         {/* 2. TAB SWITCHER WITH LIVE COUNTS (Factual Data) */}
-        <div className="flex flex-wrap gap-4 items-center bg-white p-2 rounded-full w-fit shadow-sm border border-gray-100">
+        <div className="flex flex-wrap gap-4 items-center bg-white p-2 rounded-[.5rem] w-fit shadow-sm border border-gray-100">
            <TabButton label="Registry" active={activeModule === 'reports'} onClick={() => {setActiveModule('reports'); setView('muni'); setSelectedItem(null);}} count={analytics?.stats?.totalReports} badgeColor="bg-gray-400" icon={<FileText size={16}/>} />
            <TabButton label="Action Queue" active={activeModule === 'pending'} onClick={() => {setActiveModule('pending'); setView('muni'); setSelectedItem(null);}} count={analytics?.stats?.pendingCount} badgeColor="bg-orange-500 animate-pulse" icon={<Zap size={16} fill="currentColor"/>} />
            <TabButton label="Membership" active={activeModule === 'members'} onClick={() => {setActiveModule('members'); setView('muni'); setSelectedItem(null);}} count={analytics?.stats?.totalRegistry} badgeColor="bg-blue-500" icon={<Users size={16}/>} />
@@ -128,7 +128,7 @@ const AdminDashboard = () => {
                <button onClick={() => setView('list')} className="flex items-center gap-2 text-gray-400 font-black text-[10px] uppercase mb-8 hover:text-[#166534] tracking-widest"><ArrowLeft size={14}/> Return to list</button>
                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                   {/* Left Side Details */}
-                  <div className="lg:col-span-2 bg-white p-12 rounded-[4.5rem] shadow-sm border border-gray-100 space-y-12">
+                  <div className="lg:col-span-2 bg-white p-12 rounded-[.5rem] shadow-sm border border-gray-100 space-y-12">
                      <div className="border-b border-gray-50 pb-10 flex justify-between items-start">
                         <div>
                            <p className="text-green-600 font-black uppercase text-[10px] tracking-widest mb-2 flex items-center gap-2"><ShieldCheck size={12}/> Verified Central Entry</p>
@@ -139,15 +139,15 @@ const AdminDashboard = () => {
                               {selectedItem.urgencyLevel && <span className="bg-red-50 text-red-600 px-5 py-2 rounded-2xl text-[10px] font-black uppercase border border-red-100 animate-pulse">! {selectedItem.urgencyLevel}</span>}
                            </div>
                         </div>
-                        <button onClick={() => handleDelete(selectedItem._id)} className="p-5 bg-red-50 text-red-500 rounded-[2rem] hover:bg-red-500 hover:text-white transition-all shadow-sm"><Trash2 size={28}/></button>
+                        <button onClick={() => handleDelete(selectedItem._id)} className="p-5 bg-red-50 text-red-500 rounded-[.5rem] hover:bg-red-500 hover:text-white transition-all shadow-sm"><Trash2 size={28}/></button>
                      </div>
                      <div className="grid grid-cols-2 gap-10">
-                        <div className="p-8 bg-gray-50 rounded-[3rem] space-y-5 border border-gray-100">
+                        <div className="p-8 bg-gray-50 rounded-[.5rem] space-y-5 border border-gray-100">
                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Reporter Identification</h4>
                            <p className="font-bold text-gray-800 flex items-center gap-3"><User className="text-green-600" size={18}/> {selectedItem.createdBy?.name || selectedItem.reporter?.name || selectedItem.name}</p>
                            <p className="font-bold text-gray-800 flex items-center gap-3"><Phone className="text-green-600" size={18}/> {selectedItem.reporter?.contactNumber || selectedItem.email}</p>
                         </div>
-                        <div className="p-8 bg-[#166534] rounded-[3rem] text-white shadow-2xl">
+                        <div className="p-8 bg-[#166534] rounded-[.5rem] text-white shadow-2xl">
                            <h4 className="text-[10px] opacity-60 font-black uppercase tracking-widest">Database Classification</h4>
                            <p className="font-black text-2xl uppercase mt-2 tracking-tighter">{selectedItem.mainCategory || selectedItem.role}</p>
                            <p className="text-[10px] opacity-70 mt-1 italic font-bold">{selectedItem.subCategory || "MaCync Official Record"}</p>
@@ -155,7 +155,7 @@ const AdminDashboard = () => {
                      </div>
                   </div>
                   {/* Right Side Timeline */}
-                  <div className="bg-[#166534] p-10 rounded-[4rem] text-white shadow-2xl h-fit">
+                  <div className="bg-[#166534] p-10 rounded-[.5rem] text-white shadow-2xl h-fit">
                      <h3 className="text-xl font-black mb-10 flex items-center gap-3 border-b border-white/10 pb-6 uppercase tracking-widest"><Activity className="text-[#bef264]" size={24}/> AUDIT TRAIL</h3>
                      <div className="space-y-8 relative before:absolute before:left-5 before:top-2 before:bottom-2 before:w-0.5 before:bg-white/10">
                         {selectedItem.reviewNotes?.length > 0 ? selectedItem.reviewNotes.map((note, i) => (
@@ -176,7 +176,7 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 animate-in slide-in-from-bottom-4">
                   {['Critical', 'High', 'Medium', 'Low'].map(lvl => (
                     <div key={lvl} onClick={() => {setSelection({...selection, level: lvl}); setView('muni');}}
-                        className={`bg-white p-12 rounded-[4rem] border-4 cursor-pointer shadow-sm hover:shadow-xl transition-all group text-center relative overflow-hidden ${lvl === 'Critical' ? 'border-red-50 hover:border-red-500' : 'border-transparent hover:border-black'}`}>
+                        className={`bg-white p-12 rounded-[.5rem] border-4 cursor-pointer shadow-sm hover:shadow-xl transition-all group text-center relative overflow-hidden ${lvl === 'Critical' ? 'border-red-50 hover:border-red-500' : 'border-transparent hover:border-black'}`}>
                         <AlertTriangle size={40} className={`mx-auto mb-4 ${lvl === 'Critical' ? 'text-red-600 animate-pulse' : 'text-gray-300 group-hover:text-gray-900'}`}/>
                         <h3 className="text-2xl font-black text-gray-800">{lvl}</h3>
                         <div className="absolute top-4 right-6 text-3xl font-black text-gray-100 group-hover:text-red-50">{analytics?.urgencyStats?.find(u => u._id === lvl)?.count || 0}</div>
@@ -194,7 +194,7 @@ const AdminDashboard = () => {
                     const count = drillCounts[badgeKey] || 0;
                     return (
                       <div key={muni} onClick={() => {setSelection({...selection, municipality: muni}); setView('brgy');}}
-                        className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-green-300 cursor-pointer transition-all flex justify-between items-center group relative overflow-hidden text-center">
+                        className="bg-white p-10 rounded-[.5rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-green-300 cursor-pointer transition-all flex justify-between items-center group relative overflow-hidden text-center">
                          <div><h3 className="text-2xl font-black text-gray-800">{muni}</h3><p className="text-[10px] font-bold text-green-600 uppercase mt-1">Registry: {count} Items</p></div>
                          <div className="p-4 bg-gray-50 rounded-2xl group-hover:bg-green-100 text-gray-300 group-hover:text-green-600 transition-colors"><MapPin size={24}/></div>
                       </div>
@@ -211,7 +211,7 @@ const AdminDashboard = () => {
                     const count = drillCounts[badgeKey] || 0;
                     return (
                       <div key={brgy} onClick={() => {setSelection({...selection, barangay: brgy}); setView('list');}}
-                        className="bg-white p-8 rounded-[2.5rem] border border-gray-100 hover:shadow-lg hover:border-green-300 cursor-pointer transition-all text-center relative group">
+                        className="bg-white p-8 rounded-[.5rem] border border-gray-100 hover:shadow-lg hover:border-green-300 cursor-pointer transition-all text-center relative group">
                         <p className="font-black text-gray-800 uppercase tracking-tighter text-lg">{brgy}</p>
                         <p className="text-[9px] font-bold text-gray-400 uppercase mt-1">{count} items</p>
                       </div>
@@ -221,7 +221,7 @@ const AdminDashboard = () => {
               )}
 
               {view === 'list' && (
-                <div className="bg-white rounded-[3.5rem] shadow-sm border border-gray-100 overflow-hidden">
+                <div className="bg-white rounded-[.5rem] shadow-sm border border-gray-100 overflow-hidden">
                    {loading ? <div className="p-20 text-center animate-pulse font-black text-gray-300 uppercase tracking-widest">SYNCHRONIZING WITH DATABASE...</div> : (
                      <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -255,7 +255,7 @@ const AdminDashboard = () => {
 
 // COMPONENT HELPERS
 const TabButton = ({ label, active, onClick, count, badgeColor, icon }) => (
-  <button onClick={onClick} className={`relative flex items-center gap-4 px-10 py-5 rounded-[2rem] font-black text-[11px] uppercase transition-all duration-300 hover:translate-y-[-2px] ${active ? 'bg-[#166534] text-white shadow-2xl scale-105' : 'bg-white text-gray-400 border border-gray-100 hover:bg-gray-50'}`}>
+  <button onClick={onClick} className={`relative flex items-center gap-4 px-10 py-5 rounded-[.5rem] font-black text-[11px] uppercase transition-all duration-300 hover:translate-y-[-2px] ${active ? 'bg-[#166534] text-white shadow-2xl scale-105' : 'bg-white text-gray-400 border border-gray-100 hover:bg-gray-50'}`}>
     {icon} {label}
     {count !== undefined && count > 0 && (
       <span className={`absolute -top-3 -right-3 ${badgeColor} text-white text-[10px] min-w-[24px] h-6 px-2 flex items-center justify-center rounded-full border-4 border-[#F8F9FA] shadow-xl font-black`}>{count}</span>

@@ -36,7 +36,7 @@ const Sidebar = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-[#F8F9FA] font-['Inter',sans-serif] overflow-hidden">
       {/* --- SIDEBAR --- */}
-      <aside className="w-72 bg-white border-r border-gray-100 flex flex-col sticky top-0 h-screen shadow-sm overflow-hidden">
+      <aside className="w-72 bg-white border-r border-gray-100 flex flex-col min-h-screen shadow-sm">
         
         {/* 1. BRAND HEADER (Matching "Pointsale" top) */}
         <div className="p-5 flex items-center justify-between border-b border-gray-50">

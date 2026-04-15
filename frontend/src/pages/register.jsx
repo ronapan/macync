@@ -47,17 +47,35 @@ const Register = () => {
   return (
     <div className="min-h-screen flex bg-[#F3F5F7] font-['Poppins']">
       
-      {/* LEFT SIDE: HERO (Matching Login) */}
-      <div className="hidden lg:flex w-1/2 relative items-center justify-center p-20 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroBg})` }}>
-          <div className="absolute inset-0 bg-gradient-to-br from-[#166534]/90 to-[#98ff24]/40"></div>
-        </div>
-        <div className="relative z-10 text-white space-y-6 text-center">
-          <img src={logo} alt="Logo" className="w-24 h-24 mx-auto drop-shadow-2xl mb-4" />
-          <h1 className="text-6xl font-black leading-tight tracking-tighter">Join MaCync</h1>
-          <p className="text-xl font-medium opacity-80">Help us monitor and protect Marinduque's environment.</p>
-        </div>
-      </div>
+      {/* LEFT SIDE: BACKGROUND IMAGE & BRANDING TEXT */}
+            <div className="hidden lg:flex w-1/2 relative items-center justify-center p-20 overflow-hidden">
+              {/* Background Image Layer */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
+                style={{ backgroundImage: `url(${heroBg})` }}
+              >
+                {/* Strict Green Gradient Overlay matching MaCync theme */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#166534]/90 to-[#98ff24]/40"></div>
+              </div>
+      
+              {/* Decorative Floating Elements (as seen in the reference UI) */}
+              <div className="absolute top-20 left-20 w-16 h-16 bg-white/20 rounded-full blur-xl"></div>
+              <div className="absolute bottom-40 left-10 w-4 h-4 bg-[#bef264] rounded-full"></div>
+      
+              {/* Branding Content */}
+              <div className="relative z-10 text-white space-y-6">
+                <div className="flex items-center gap-4 mb-10">
+                  <img src={logo} alt="Logo" className="w-25 h-25 drop-shadow-2xl" />
+                  <h2 className="text-3xl font-black tracking-tighter">MaCync</h2>
+                </div>
+                <h1 className="text-5xl font-black leading-[1.1] tracking-tighter">
+                  Be Part of the Change
+                </h1>
+                <p className="text-xl font-medium opacity-80 max-w-sm">
+                  Register as a MaCEC member and help monitor, report, and support environmental initiatives in your area.
+                </p>
+              </div>
+            </div>
 
       {/* RIGHT SIDE: REGISTER FORM */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 overflow-y-auto">
