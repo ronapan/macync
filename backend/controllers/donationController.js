@@ -122,9 +122,9 @@ export const updateDonationStatus = async (req, res) => {
     }
 
     await donation.save();
-    res.json({ message: "Donation processed and receipt issued.", donation });
+    res.status(200).json({ message: "Success", donation });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
 

@@ -24,6 +24,8 @@ router.get("/my", protect, getMyDonations);
 // 2. Admin stats
 router.get("/stats", protect, authorizeRoles('admin'), getAdminDonations);
 
+router.put("/:id/verify", protect, authorizeRoles('admin'), updateDonationStatus);
+
 // 3. Main endpoints
 router.route("/")
   .get(protect, authorizeRoles('admin'), getAdminDonations)
@@ -34,5 +36,7 @@ router.route("/:id")
   .put(protect, upload.single('proofOfPayment'), updateMyDonation)        // 🔥 Member edits
   .patch(protect, authorizeRoles('admin'), updateDonationStatus)          // 🔥 Admin verifies (PATCH)
   .delete(protect, deleteDonation);
+
+
 
 export default router;
