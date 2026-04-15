@@ -17,18 +17,16 @@ connectDB();
 const app = express();
 
 // 2. PRODUCTION FIX: ENSURE UPLOAD DIRECTORIES EXIST (Prevents 500 Error on Render)
+// PRODUCTION FIX: Siguraduhing existing ang folders
 const uploadDirs = ['uploads', 'uploads/donations'];
 uploadDirs.forEach(dir => {
-  if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir, { recursive: true });
-    console.log(`Created directory: ${dir}`);
-  }
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 });
 
 // 3. GLOBAL MIDDLEWARES
 app.use(cors({
   origin: "*", // Flexible for defense/testing
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 

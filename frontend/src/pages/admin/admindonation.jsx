@@ -46,11 +46,12 @@ const AdminDonation = () => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       
-      await axios.put(`${API_URL}/donations/${id}`, { 
-        status, 
-        adminNote: adminNote || "Transaction verified by MaCync Treasury." 
-      }, config);
-      
+      // Line 49 — change PUT to PATCH
+    await axios.patch(`${API_URL}/donations/${id}`, { 
+      status, 
+      adminNote: adminNote || "Transaction verified by MaCync Treasury." 
+    }, config);
+          
       setModal({ 
         show: true, 
         type: status === 'received' ? 'success' : 'error', 
@@ -227,8 +228,8 @@ const AdminDonation = () => {
 
                      <div className="space-y-4 pt-4">
                         <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Proof of Payment</h4>
-                        <a href={`http://localhost:3000/${selectedDonation.proofOfPayment}`} target="_blank" rel="noreferrer" className="block rounded-[.2rem] overflow-hidden border-4 border-white shadow-2xl h-90 group relative">
-                           <img src={`http://localhost:3000/${selectedDonation.proofOfPayment}`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" alt="receipt" />
+                        <a href={`${API_URL.replace('/api/v1', '')}/${selectedDonation.proofOfPayment}`}  target="_blank" rel="noreferrer" className="block rounded-[.2rem] overflow-hidden border-4 border-white shadow-2xl h-90 group relative">
+                           <img src={`${API_URL.replace('/api/v1', '')}/${selectedDonation.proofOfPayment}`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" alt="receipt" />
                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white font-black text-xs uppercase tracking-widest">full view</div>
                         </a>
                      </div>

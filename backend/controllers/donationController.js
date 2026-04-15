@@ -3,42 +3,23 @@ import Donation from "../models/donation.js";
 // @desc Member: Submit new donation
 export const createDonation = async (req, res) => {
   try {
-    // 1. Log what is arriving to see if fields are missing
-    console.log("Incoming Donation Body:", req.body);
-    console.log("Incoming File:", req.file);
+    if (!req.file) return res.status(400).json({ message: "File required" });
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Proof of payment image is required" });
-    }
+    // 🔥 FIX PARA SA 404: Gawing "/" ang lahat ng "\" sa path
+    const cleanPath = req.file.path.replace(/\\/g, "/");
 
-    const { amount, referenceNumber, category, donorName, contactNumber, paymentMethod, municipality, barangay } = req.body;
-
-    // 2. Strict Validation Check before DB attempt
-    if (!amount || !referenceNumber || !paymentMethod || !municipality || !barangay) {
-      return res.status(400).json({ message: "Missing required fields: Amount, Ref#, Method, or Address" });
-    }
-
-    // 3. Save to DB
     const donation = await Donation.create({
+      ...req.body,
       donatorId: req.user._id,
-      donorName: donorName || req.user.name,
-      contactNumber: contactNumber || "09XXXXXXXXX",
-      amount,
-      paymentMethod,
-      referenceNumber,
-      category,
-      municipality,
-      barangay,
-      proofOfPayment: req.file.path,
+      proofOfPayment: cleanPath, // I-save ang malinis na path
+      municipality: req.user.municipality,
+      barangay: req.user.barangay,
     });
-
     res.status(201).json(donation);
-  } catch (error) {
-    console.error("DATABASE SAVE ERROR:", error.message);
-    res.status(500).json({ message: "Database Error: " + error.message });
-  }
+  } catch (error) { res.status(500).json({ message: error.message }); }
 };
 
+// @desc Member: Edit own PENDING donation
 // @desc Member: Edit own PENDING donation
 export const updateMyDonation = async (req, res) => {
   try {
@@ -46,12 +27,15 @@ export const updateMyDonation = async (req, res) => {
 
     if (!donation) return res.status(404).json({ message: "Donation not found" });
 
-    // 🔥 Security: only the owner can edit
-    if (donation.donatorId.toString() !== req.user._id.toString()) {
+    // 🔥 Allow admin OR the owner
+    const isOwner = donation.donatorId.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // 🔥 Only pending donations can be edited
+    // Only pending donations can be edited
     if (donation.status !== 'pending') {
       return res.status(400).json({ message: "Cannot edit a verified donation." });
     }
@@ -64,13 +48,13 @@ export const updateMyDonation = async (req, res) => {
     donation.contactNumber = contactNumber || donation.contactNumber;
     donation.paymentMethod = paymentMethod || donation.paymentMethod;
 
-    // 🔥 Update proof if a new file was uploaded
     if (req.file) {
       donation.proofOfPayment = req.file.path;
     }
 
     await donation.save();
     res.json(donation);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -150,13 +134,18 @@ export const deleteDonation = async (req, res) => {
     const donation = await Donation.findById(req.params.id);
     if (!donation) return res.status(404).json({ message: "Not found" });
 
+    // Only owner (member) can delete, and only if pending
+    if (donation.donatorId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
     if (donation.status !== 'pending') {
       return res.status(400).json({ message: "Cannot delete verified donations." });
     }
 
     await donation.deleteOne();
     res.json({ message: "Donation record removed." });
-  } catch (error) { 
-    res.status(500).json({ message: error.message }); 
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

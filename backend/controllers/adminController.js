@@ -3,26 +3,24 @@ import EnvironmentalRecord from "../models/EnvironmentalRecord.js";
 
 // backend/controllers/adminController.js
 
+// backend/controllers/adminController.js
+
 export const getAdminAnalytics = async (req, res) => {
   try {
     // 1. Bilangin lahat maliban sa admin para sa Membership Registry badge
     const totalRegistry = await User.countDocuments({ role: { $ne: "admin" } });
     
-    // Opsyonal: Breakdown para sa analytics
-    const totalMembers = await User.countDocuments({ role: "member" });
-    const totalMuniOfficers = await User.countDocuments({ role: "municipal_officer" });
-    const totalBrgyOfficers = await User.countDocuments({ role: "barangay_officer" });
+    // 2. Kabuuang bilang ng lahat ng reports (para sa top badge)
+    const totalReports = await EnvironmentalRecord.countDocuments();
 
     const stats = {
-      totalRegistry, // Ito ang dapat maging "3" (1+1+1)
-      totalMembers,
-      totalMuniOfficers,
-      totalBrgyOfficers,
-      totalReports: await EnvironmentalRecord.countDocuments(),
+      totalRegistry: totalRegistry, 
+      totalReports: totalReports,
       pendingCount: await EnvironmentalRecord.countDocuments({ status: "pending" }),
+      resolvedCount: await EnvironmentalRecord.countDocuments({ status: { $regex: /resolved/i } }),
     };
 
-    // 2. Member/Officer distribution per location (Para sa drill-down badges)
+    // 3. User distribution per location (Para sa Membership Tab)
     const userStats = await User.aggregate([
       { $match: { role: { $ne: "admin" } } },
       {
@@ -33,20 +31,39 @@ export const getAdminAnalytics = async (req, res) => {
       }
     ]);
 
+    // 4. 🔥 THE FIX: Reporting Stats grouped by Muni, Brgy, AND UrgencyLevel
+    // Kailangan ang urgencyLevel sa loob ng _id para gumana ang drill-down badges
     const reportingStats = await EnvironmentalRecord.aggregate([
-      { $group: { _id: { municipality: "$municipality", barangay: "$barangay" }, total: { $sum: 1 } } }
+      {
+        $group: {
+          _id: { 
+            municipality: "$municipality", 
+            barangay: "$barangay",
+            urgencyLevel: "$urgencyLevel" // Isinama ito para ma-filter ng frontend
+          },
+          total: { $sum: 1 }
+        }
+      }
     ]);
 
+    // 5. Urgency breakdown (Para sa 4 na malalaking cards sa Urgency Tab)
     const urgencyStats = await EnvironmentalRecord.aggregate([
-      { $group: { _id: "$urgencyLevel", count: { $sum: 1 } } }
+      { 
+        $group: { 
+          _id: "$urgencyLevel", 
+          count: { $sum: 1 } 
+        } 
+      }
     ]);
 
+    // I-send ang kumpletong data sa frontend
     res.json({ stats, userStats, reportingStats, urgencyStats });
+    
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Analytics Error:", error.message);
+    res.status(500).json({ message: "Internal Server Error during analytics generation." });
   }
 };
-
 
 
 // @desc    Get members filtered by municipality
