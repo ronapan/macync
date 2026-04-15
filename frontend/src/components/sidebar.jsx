@@ -22,9 +22,9 @@ const Sidebar = ({ children }) => {
   const menuItems = [
     { name: 'Dashboard', icon: <Home size={18} />, path: '/dashboard' },
     { name: 'Search', icon: <Search size={18} />, path: '/search' },
-    { name: 'Reporting Hub', icon: <FileText size={18} />, path: '/report' },
+    { name: 'Reports', icon: <FileText size={18} />, path: '/report' },
     { name: 'Membership', icon: <Users size={18} />, path: '/membership' },
-    { name: userRole === 'admin' ? 'Finance Hub' : 'Donate', icon: <Heart size={18} />, path: '/donate' },
+    { name: userRole === 'admin' ? 'Donation' : 'Donate', icon: <Heart size={18} />, path: '/donate' },
     { name: 'My Profile', icon: <User size={18} />, path: '/profile' }, // Added Profile here
   ];
 
