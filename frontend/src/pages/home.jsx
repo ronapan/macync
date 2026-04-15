@@ -20,11 +20,7 @@ const Home = () => {
             <h1 className="text-3xl font-black text-[#166534] mb-2 tracking-tight">Announcements</h1>
             <p className="text-gray-400 font-medium">Join community activities and stay updated on environmental news.</p>
           </div>
-          <div className="flex gap-3">
-             <button className="bg-[#166534] text-white px-6 py-3 rounded-[.5rem] font-bold flex items-center gap-2 shadow-lg shadow-green-100 hover:scale-105 transition-all">
-                <Plus size={18}/> New Report
-             </button>
-          </div>
+          
         </div>
 
       
